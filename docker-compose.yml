@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  ezbookkeeping:
+    image: mayswind/ezbookkeeping:latest
+    container_name: ezbookkeeping
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data
+    environment:
+      - TZ=America/Mexico_City
+      # SQLite database incrustado en ./data/ezbookkeeping.db
+
+# Configuración avanzada con PostgreSQL (descomenta para usar):
+# services:
+#   postgres:
+#     image: postgres:15
+#     container_name: ezbookkeeping-db
+#     restart: unless-stopped
+#     environment:
+#       - POSTGRES_DB=ezbookkeeping
+#       - POSTGRES_USER=ezbook
+#       - POSTGRES_PASSWORD=securepass123
+#     volumes:
+#       - db_data:/var/lib/postgresql/data
+#
+#   ezbookkeeping:
+#     image: mayswind/ezbookkeeping:latest
+#     container_name: ezbookkeeping
+#     restart: unless-stopped
+#     ports:
+#       - "8080:8080"
+#     environment:
+#       - DATABASE_TYPE=postgres
+#       - DATABASE_URL=postgres://ezbook:securepass123@postgres:5432/ezbookkeeping
+#     depends_on:
+#       - postgres
+#
+# volumes:
+#   db_data:
